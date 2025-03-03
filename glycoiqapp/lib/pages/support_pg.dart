@@ -16,7 +16,7 @@ class _SupportPageState extends State<SupportPage> {
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
-          topBar(),
+          topicLine(),
           supportCard(name: 'Name', phone: '0776662244', rel: 'Family'),
           const SizedBox(height: 10),
           supportCard(name: 'Name', phone: '0776662244', rel: 'Spouse'),
@@ -28,7 +28,7 @@ class _SupportPageState extends State<SupportPage> {
   }
 }
 
-Widget topBar() {
+Widget topicLine() {
   return Container(
     padding: const EdgeInsets.all(10),
     child: Row(
@@ -50,21 +50,22 @@ Widget supportCard({
   required String rel,
 }) {
   return Card(
-      child: Column(
-    children: [
-      ListTile(
-        title: Text(name),
-        subtitle: Text(phone),
-        trailing: Text(rel),
-      ),
-      SizedBox(
-        width: double.infinity,
-        child: FilledButton(
-          onPressed: () {},
-          child: const Text('Call'),
+    child: Column(
+      children: [
+        ListTile(
+          title: Text(name),
+          subtitle: Text(phone),
+          trailing: Text(rel),
         ),
-      ),
-      const SizedBox(height: 10),
-    ],
-  ));
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(10),
+          child: FilledButton(
+            onPressed: () {},
+            child: const Text('Call'),
+          ),
+        ),
+      ],
+    ),
+  );
 }
