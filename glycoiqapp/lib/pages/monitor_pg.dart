@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class MonitorPage extends StatefulWidget {
-  const MonitorPage({Key? key}) : super(key: key);
+  const MonitorPage({super.key});
 
   @override
   State<MonitorPage> createState() => _MonitorPageState();
 }
 
 class _MonitorPageState extends State<MonitorPage> {
+  // update this glucose level data by the app
   List<int> glucose = [
     78,
     20,
@@ -21,64 +22,71 @@ class _MonitorPageState extends State<MonitorPage> {
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(children: [
-        connectButton(),
-        const SizedBox(height: 20),
-        monitorData(),
-        const SizedBox(height: 20),
-        lastData(glucose),
+        Expanded(flex: 3, child: lastData(glucose)),
+        Expanded(flex: 6, child: monitorData()),
+        Expanded(flex: 1, child: connectButton()),
       ]),
     );
   }
 }
 
 Widget connectButton() {
-  return SizedBox(
-    width: double.infinity,
-    child: ElevatedButton(
+  return Container(
+    padding: const EdgeInsets.only(top: 10),
+    child: FilledButton(
       onPressed: () {}, // add action here
-      child: const Text('Connect Glyco-iQ', style: TextStyle(fontSize: 18)),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text('Connect Glyco-iQ', style: TextStyle(fontSize: 18)),
+          Icon(Icons.bluetooth_connected_outlined)
+        ],
+      ),
     ),
   );
 }
 
 Widget monitorData() {
   return Container(
-    // padding: const EdgeInsets.all(10),
-    height: 200,
-    width: double.infinity,
-    child: Card(
-      child: ElevatedButton(
-        onPressed: () {}, // add action here
-        child: const Text('Monitor', style: TextStyle(fontSize: 18)),
+    padding: const EdgeInsets.only(top: 10),
+    child: const Card.filled(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ListTile(title: Center(child: Text('Monitor Data'))),
+        ],
       ),
     ),
   );
 }
 
 Widget lastData(glucose) {
-  return Card(
+  return Card.filled(
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ListTile(title: Center(child: Text('Last Monitored'))),
+        const ListTile(
+            title: Center(
+                child: Text('Glucose Level mg/dl',
+                    style: TextStyle(fontSize: 20)))),
         Text(
-          glucose[0].toString() + ' mg/dl',
-          style:
-              TextStyle(fontSize: 36, color: ColorScheme.fromSwatch().primary),
+          '${glucose[0]}',
+          style: const TextStyle(
+            fontSize: 36,
+          ),
         ),
-        SizedBox(height: 10),
-        Text(
-          'recorded at ' +
-              glucose[1].toString() +
-              ':' +
-              glucose[2].toString() +
-              ' ' +
-              glucose[3].toString() +
-              '/' +
-              glucose[4].toString() +
-              '/' +
-              glucose[5].toString(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Text('Time'),
+            Text(('${glucose[1]}:${glucose[2]}'),
+                style: const TextStyle(fontSize: 24)),
+            const Text('Date'),
+            Text('${glucose[3]}/${glucose[4]}/${glucose[5]}',
+                style: const TextStyle(fontSize: 24)),
+          ],
         ),
-        SizedBox(height: 10),
       ],
     ),
   );

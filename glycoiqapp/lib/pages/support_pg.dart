@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SupportPage extends StatefulWidget {
-  const SupportPage({Key? key}) : super(key: key);
+  const SupportPage({super.key});
 
   @override
   State<SupportPage> createState() => _SupportPageState();
@@ -15,13 +15,24 @@ class _SupportPageState extends State<SupportPage> {
     return Container(
       padding: const EdgeInsets.all(10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           topicLine(),
-          supportCard(name: 'Name', phone: '0776662244', rel: 'Family'),
-          const SizedBox(height: 10),
-          supportCard(name: 'Name', phone: '0776662244', rel: 'Spouse'),
-          const SizedBox(height: 10),
-          supportCard(name: 'Name', phone: '0776662244', rel: 'Doctor'),
+          Expanded(
+            flex: 1,
+            child:
+                supportCard(name: 'Name', phone: '0776662244', rel: 'Family'),
+          ),
+          Expanded(
+            flex: 1,
+            child:
+                supportCard(name: 'Name', phone: '0776662244', rel: 'Spouse'),
+          ),
+          Expanded(
+            flex: 1,
+            child:
+                supportCard(name: 'Name', phone: '0776662244', rel: 'Doctor'),
+          ),
         ],
       ),
     );
@@ -49,23 +60,31 @@ Widget supportCard({
   required String phone,
   required String rel,
 }) {
-  return Card(
-    child: Column(
-      children: [
-        ListTile(
-          title: Text(name),
-          subtitle: Text(phone),
-          trailing: Text(rel),
-        ),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(10),
-          child: FilledButton(
-            onPressed: () {},
-            child: const Text('Call'),
+  return Container(
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Card.filled(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ListTile(
+            title: Text(name),
+            subtitle: Text(phone),
+            trailing: Text(rel),
           ),
-        ),
-      ],
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            child: FilledButton(
+              onPressed: () {},
+              child: const Icon(Icons.call),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: const [Text('Call'), Icon(Icons.call)],
+              // ),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
