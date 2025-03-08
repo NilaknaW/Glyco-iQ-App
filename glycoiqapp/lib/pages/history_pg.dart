@@ -22,6 +22,12 @@ class _HistoryPageState extends State<HistoryPage> {
     setState(() => history = data);
   }
 
+  //insert random data for glucose level
+  // void addHistory(String date, String time, String glucose_level) async {
+  //   await DatabaseHelper().insertGlucose(date, time, glucose_level);
+  //   loadHistory();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -99,20 +105,6 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget historyLogs() {
-    // here we will fetch data from the database
-    // List data = [
-    //   {'date': '2022-01-01', 'glucose': '100'},
-    //   {'date': '2022-01-02', 'glucose': '110'},
-    //   {'date': '2022-01-03', 'glucose': '120'},
-    //   {'date': '2022-01-04', 'glucose': '130'},
-    //   {'date': '2022-01-05', 'glucose': '140'},
-    //   {'date': '2022-01-06', 'glucose': '150'},
-    //   {'date': '2022-01-07', 'glucose': '160'},
-    //   {'date': '2022-01-08', 'glucose': '170'},
-    //   {'date': '2022-01-09', 'glucose': '180'},
-    //   {'date': '2022-01-10', 'glucose': '190'},
-    // ];
-
     // return the list of logs
     return Column(
       children: [
@@ -130,10 +122,8 @@ class _HistoryPageState extends State<HistoryPage> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Text(data[i]['date']),
-                // Text(data[i]['glucose']),
                 Text(record['date']),
-                Text(record['glucose_level']),
+                Text(record['glucose']),
               ],
             ),
           ),

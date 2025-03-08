@@ -19,10 +19,10 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     final path = await getDatabasesPath();
     final dbPath = join(path, 'glycoiQ.db');
-
+    // await deleteDatabase(dbPath); // Delete this line after first run
     return await openDatabase(
       dbPath,
-      version: 1,
+      version: 3, // Updated version number
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE emergency_contacts (
@@ -37,9 +37,21 @@ class DatabaseHelper {
           CREATE TABLE glucose_history (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             date TEXT NOT NULL,
+            time TEXT NOT NULL,
             glucose TEXT NOT NULL
           )
         ''');
+
+        await db.insert('glucose_history',
+            {'date': '2025-03-08', 'time': '08:00 AM', 'glucose': '110 mg/dL'});
+        await db.insert('glucose_history',
+            {'date': '2025-03-07', 'time': '06:30 AM', 'glucose': '95 mg/dL'});
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute(
+              "ALTER TABLE glucose_history ADD COLUMN time TEXT NOT NULL DEFAULT ''");
+        }
       },
     );
   }
@@ -67,11 +79,11 @@ class DatabaseHelper {
   }
 
   // Insert Glucose Data
-  Future<void> insertGlucose(String date, String glucose) async {
+  Future<void> insertGlucose(String date, String time, String glucose) async {
     final db = await database;
     await db.insert(
       'glucose_history',
-      {'date': date, 'glucose': glucose},
+      {'date': date, 'time': time, 'glucose': glucose},
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -79,6 +91,6 @@ class DatabaseHelper {
   // Fetch Glucose History
   Future<List<Map<String, dynamic>>> getHistory() async {
     final db = await database;
-    return await db.query('glucose_history', orderBy: 'date DESC');
+    return await db.query('glucose_history', orderBy: 'date DESC, time DESC');
   }
 }
