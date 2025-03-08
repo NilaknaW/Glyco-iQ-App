@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../database_helper.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({super.key});
@@ -8,7 +9,85 @@ class SupportPage extends StatefulWidget {
 }
 
 class _SupportPageState extends State<SupportPage> {
+  // fetch data from local database
+  List<Map<String, dynamic>> contacts = [];
+  bool _isEditMode = false; // Controls edit mode
+
+  @override
+  void initState() {
+    super.initState();
+    loadContacts();
+  }
+
+  void loadContacts() async {
+    final data = await DatabaseHelper().getContacts();
+    setState(() => contacts = data);
+  }
+
+  void addContact(String name, String phone, String rel) async {
+    if (contacts.length < 3) {
+      await DatabaseHelper().insertContact(name, phone, rel);
+      loadContacts();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('You can only add up to 3 contacts!')),
+      );
+    }
+  }
+
+  void deleteContact(int id) async {
+    await DatabaseHelper().deleteContact(id);
+    loadContacts();
+  }
+
+  void toggleEditMode() {
+    setState(() => _isEditMode = !_isEditMode);
+  }
+
   // add methods to save and delete contacts
+  void _showAddContactDialog() {
+    String name = '', phone = '', relation = '';
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add Emergency Contact'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              decoration: const InputDecoration(labelText: 'Name'),
+              onChanged: (value) => name = value,
+            ),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Phone'),
+              keyboardType: TextInputType.phone,
+              onChanged: (value) => phone = value,
+            ),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Relation'),
+              onChanged: (value) => relation = value,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (name.isNotEmpty && phone.isNotEmpty && relation.isNotEmpty) {
+                addContact(name, phone, relation);
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,74 +96,93 @@ class _SupportPageState extends State<SupportPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          topicLine(),
+          topicLine(context, toggleEditMode),
           Expanded(
-            flex: 1,
-            child:
-                supportCard(name: 'Name', phone: '0776662244', rel: 'Family'),
+            child: ListView.builder(
+              itemCount: contacts.length,
+              itemBuilder: (context, index) {
+                final contact = contacts[index];
+                return supportCard(
+                  id: contact['id'],
+                  name: contact['name'],
+                  phone: contact['phone'],
+                  rel: contact['rel'],
+                  showDelete: _isEditMode,
+                  onDelete: deleteContact,
+                );
+              },
+            ),
           ),
-          Expanded(
-            flex: 1,
-            child:
-                supportCard(name: 'Name', phone: '0776662244', rel: 'Spouse'),
-          ),
-          Expanded(
-            flex: 1,
-            child:
-                supportCard(name: 'Name', phone: '0776662244', rel: 'Doctor'),
+          if (_isEditMode && contacts.length < 3)
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: FilledButton.icon(
+                onPressed: _showAddContactDialog,
+                icon: const Icon(Icons.add),
+                label: const Text('Add Contact'),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget topicLine(BuildContext context, Function onEditContact) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          const Text('Emergency Contacts', style: TextStyle(fontSize: 20)),
+          const Spacer(),
+          IconButton(
+            onPressed: () => onEditContact(), // Add Contact Popup
+            icon: Icon(_isEditMode ? Icons.check : Icons.edit), // Edit Button
           ),
         ],
       ),
     );
   }
-}
 
-Widget topicLine() {
-  return Container(
-    padding: const EdgeInsets.all(10),
-    child: Row(
-      children: [
-        const Text('Emergency Contacts', style: TextStyle(fontSize: 20)),
-        const Spacer(),
-        IconButton(
-          onPressed: () {}, // add actions
-          icon: const Icon(Icons.add),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget supportCard({
-  required String name,
-  required String phone,
-  required String rel,
-}) {
-  return Container(
-    padding: const EdgeInsets.only(bottom: 10),
-    child: Card.filled(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          ListTile(
-            title: Text(name),
-            subtitle: Text(phone),
-            trailing: Text(rel),
-          ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            child: FilledButton(
-              onPressed: () {},
-              child: const Icon(Icons.call),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: const [Text('Call'), Icon(Icons.call)],
-              // ),
+  Widget supportCard(
+      {required int id,
+      required String name,
+      required String phone,
+      required String rel,
+      required bool showDelete,
+      required Function(int) onDelete}) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Card.filled(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ListTile(
+              title: Text(name),
+              subtitle: Text(phone),
+              // trailing: Text(rel),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(rel),
+                  if (showDelete)
+                    IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () => onDelete(id),
+                    ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              child: FilledButton(
+                onPressed: () {}, // add calling action here
+                child: const Icon(Icons.call),
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

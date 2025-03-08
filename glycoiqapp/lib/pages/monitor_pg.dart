@@ -28,66 +28,66 @@ class _MonitorPageState extends State<MonitorPage> {
       ]),
     );
   }
-}
 
-Widget connectButton() {
-  return Container(
-    padding: const EdgeInsets.only(top: 10),
-    child: FilledButton(
-      onPressed: () {}, // add action here
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text('Connect Glyco-iQ', style: TextStyle(fontSize: 18)),
-          Icon(Icons.bluetooth_connected_outlined)
-        ],
-      ),
-    ),
-  );
-}
-
-Widget monitorData() {
-  return Container(
-    padding: const EdgeInsets.only(top: 10),
-    child: const Card.filled(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ListTile(title: Center(child: Text('Monitor Data'))),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget lastData(glucose) {
-  return Card.filled(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        const ListTile(
-            title: Center(
-                child: Text('Glucose Level mg/dl',
-                    style: TextStyle(fontSize: 20)))),
-        Text(
-          '${glucose[0]}',
-          style: const TextStyle(
-            fontSize: 36,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  Widget connectButton() {
+    return Container(
+      padding: const EdgeInsets.only(top: 10),
+      child: FilledButton(
+        onPressed: () {}, // add action here
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Text('Time'),
-            Text(('${glucose[1]}:${glucose[2]}'),
-                style: const TextStyle(fontSize: 24)),
-            const Text('Date'),
-            Text('${glucose[3]}/${glucose[4]}/${glucose[5]}',
-                style: const TextStyle(fontSize: 24)),
+            Text('Connect Glyco-iQ', style: TextStyle(fontSize: 18)),
+            Icon(Icons.bluetooth_connected_outlined)
           ],
         ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
+
+  Widget monitorData() {
+    return Container(
+      padding: const EdgeInsets.only(top: 10),
+      child: const Card.filled(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ListTile(title: Center(child: Text('Monitor Data'))),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget lastData(glucose) {
+    return Card.filled(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          const ListTile(
+              title: Center(
+                  child: Text('Glucose Level mg/dl',
+                      style: TextStyle(fontSize: 20)))),
+          Text(
+            '${glucose[0]}',
+            style: const TextStyle(
+              fontSize: 36,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Text('Time'),
+              Text(('${glucose[1]}:${glucose[2]}'),
+                  style: const TextStyle(fontSize: 24)),
+              const Text('Date'),
+              Text('${glucose[3]}/${glucose[4]}/${glucose[5]}',
+                  style: const TextStyle(fontSize: 24)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
