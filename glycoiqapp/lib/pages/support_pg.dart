@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../database_helper.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({super.key});
@@ -176,7 +177,8 @@ class _SupportPageState extends State<SupportPage> {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               child: FilledButton(
-                onPressed: () {}, // add calling action here
+                onPressed: () =>
+                    _makePhoneCall(phone), // add calling action here
                 child: const Icon(Icons.call),
               ),
             ),
@@ -184,5 +186,14 @@ class _SupportPageState extends State<SupportPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri url = Uri.parse("tel:$phoneNumber");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw "Could not launch $url";
+    }
   }
 }
