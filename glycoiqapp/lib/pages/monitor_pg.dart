@@ -65,6 +65,7 @@ class _MonitorPageState extends State<MonitorPage> {
               onPressed: () => readFromBluetooth(
                 context: context,
                 onDataReceived: (data) {
+                  // if (data)
                   setState(() => glucose = data);
                 },
               ),
