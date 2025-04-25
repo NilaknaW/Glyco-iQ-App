@@ -17,7 +17,9 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
+    // print("inside initDatabase()");
     final path = await getDatabasesPath();
+    // print("path: $path");
     final dbPath = join(path, 'glycoiQ.db');
     // await deleteDatabase(dbPath); // Delete this line after first run
     return await openDatabase(
@@ -91,6 +93,21 @@ class DatabaseHelper {
   // Fetch Glucose History
   Future<List<Map<String, dynamic>>> getHistory() async {
     final db = await database;
+    // final data =
+    //     await db.query('glucose_history', orderBy: 'date DESC, time DESC');
+    // print('Loaded glucose history: $data');
     return await db.query('glucose_history', orderBy: 'date DESC, time DESC');
+  }
+
+  // Fetch last Glucose entry
+  Future<Map<String, dynamic>> getLastGlucose() async {
+    final db = await database;
+    final data = await db.query('glucose_history',
+        orderBy: 'date DESC, time DESC', limit: 1);
+    if (data.isNotEmpty) {
+      return data.first;
+    } else {
+      return {}; // Return an empty map if no data is found
+    }
   }
 }

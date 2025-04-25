@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../database_helper.dart';
+import '../helper/database_helper.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});

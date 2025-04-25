@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../database_helper.dart';
+import '../helper/database_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SupportPage extends StatefulWidget {
