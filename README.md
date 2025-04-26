@@ -1,7 +1,7 @@
 # Glyco iQ
 <img src="glycoiqapp/assets/icons/splash.png" alt="" height="200">
 
-Glyco iQ is a non-invasive glucose measuring device developed by a group of undergraduates from niversity of Moratuwa. The product features novel approach to traditional glucose measuring done by finger pricking method. GlycoiQ introduces an innovative approach with the use of laser technology, machine learning, and IoT (Internet of Things).
+Glyco iQ is a non-invasive glucose measuring device developed by a group of undergraduates from the University of Moratuwa. The product features a novel approach to traditional glucose measuring which is done by the finger pricking method. GlycoiQ introduces an innovative approach with the use of laser technology, machine learning, and IoT (Internet of Things).
 
 This repository houses the companion mobile application where the user views glucose results. The app features:
 
