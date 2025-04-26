@@ -82,7 +82,7 @@ void connectToDevice(BuildContext context) async {
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            title: const Text('Choose GlycoIQ Device'),
+            title: const Text('Choose GlycoiQ Device'),
             content: SizedBox(
               height: 350,
               width: double.maxFinite,

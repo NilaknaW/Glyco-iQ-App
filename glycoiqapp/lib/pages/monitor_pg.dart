@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../helper/database_helper.dart';
 import '../helper/bluetooth_helper.dart';
+import 'dart:ui';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class MonitorPage extends StatefulWidget {
   const MonitorPage({super.key});
@@ -56,25 +58,57 @@ class _MonitorPageState extends State<MonitorPage> {
   Widget monitorData() {
     return Container(
       padding: const EdgeInsets.only(top: 10),
+      width: double.infinity,
       child: Card.filled(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ListTile(title: Center(child: Text('Monitor Data'))),
-            TextButton(
-              onPressed: () => readFromBluetooth(
-                context: context,
-                onDataReceived: (data) {
-                  // if (data)
-                  setState(() => glucose = data);
-                },
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              FilledButton(
+                onPressed: () => readFromBluetooth(
+                  context: context,
+                  onDataReceived: (data) {
+                    // if (data)
+                    setState(() => glucose = data);
+                  },
+                ),
+                child: Column(
+                  children: [
+                    Image.asset('assets/icons/icon.png')
+                        .animate(onPlay: (controller) => controller.repeat())
+                        .fadeIn(curve: Curves.easeInOut, duration: 1500.ms)
+                        .scale(
+                          curve: Curves.easeInOut,
+                          duration: 1500.ms,
+                        )
+                        .then(delay: 1000.ms)
+                        .fadeOut(curve: Curves.easeInOut, duration: 1000.ms)
+                        .then(delay: 500.ms), // baseline=800ms
+                    Text(
+                      'Monitor Glucose Now',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: ColorScheme.fromSeed(seedColor: Colors.blue)
+                            .primary,
+                      ),
+                    ),
+                  ],
+                ),
+                style: ButtonStyle(
+                  backgroundColor:
+                      WidgetStatePropertyAll(Colors.white.withOpacity(0.5)),
+                  foregroundColor: WidgetStatePropertyAll(Colors.blue),
+                  shape: WidgetStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      // side: const BorderSide(color: Colors.blue, width: 2),
+                    ),
+                  ),
+                ),
               ),
-              child: Text(
-                'Monitor Glucose Now',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -92,8 +126,9 @@ class _MonitorPageState extends State<MonitorPage> {
                       style: TextStyle(fontSize: 20)))),
           Text(
             glucose[0],
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 36,
+              color: ColorScheme.fromSeed(seedColor: Colors.blue).primary,
             ),
           ),
           Row(
