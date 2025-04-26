@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../helper/database_helper.dart';
 import '../helper/bluetooth_helper.dart';
-import 'dart:ui';
+// import 'dart:ui';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class MonitorPage extends StatefulWidget {
@@ -60,12 +60,21 @@ class _MonitorPageState extends State<MonitorPage> {
       padding: const EdgeInsets.only(top: 10),
       width: double.infinity,
       child: Card.filled(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              FilledButton(
+        // child: Padding(
+        // padding: const EdgeInsets.all(20),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Colors.greenAccent, Colors.blueAccent],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: FilledButton(
                 onPressed: () => readFromBluetooth(
                   context: context,
                   onDataReceived: (data) {
@@ -107,9 +116,10 @@ class _MonitorPageState extends State<MonitorPage> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+        // ),
       ),
     );
   }
@@ -124,13 +134,37 @@ class _MonitorPageState extends State<MonitorPage> {
               title: Center(
                   child: Text('Glucose Level mmol/L',
                       style: TextStyle(fontSize: 20)))),
-          Text(
-            glucose[0],
-            style: TextStyle(
-              fontSize: 36,
-              color: ColorScheme.fromSeed(seedColor: Colors.blue).primary,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                glucose[0],
+                style: TextStyle(
+                  fontSize: 36,
+                  color: ColorScheme.fromSeed(seedColor: Colors.blue).primary,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Icon(
+                (double.parse(glucose[0]) <= 7.8 &&
+                        double.parse(glucose[0]) > 3.9)
+                    ? Icons.check_circle
+                    : Icons.error,
+                color: (double.parse(glucose[0]) <= 7.8 &&
+                        double.parse(glucose[0]) > 3.9)
+                    ? Colors.green
+                    : Colors.red,
+                size: 36,
+              )
+            ],
           ),
+          // Text(
+          //   glucose[0],
+          //   style: TextStyle(
+          //     fontSize: 36,
+          //     color: ColorScheme.fromSeed(seedColor: Colors.blue).primary,
+          //   ),
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

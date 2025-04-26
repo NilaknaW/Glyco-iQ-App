@@ -60,15 +60,15 @@ void connectToDevice(BuildContext context) async {
     // Ask for permissions
     await Permission.bluetoothScan.request();
     await Permission.bluetoothConnect.request();
-    // await Permission.location.request();
+    await Permission.location.request();
 
     foundDevices.clear();
-    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 5));
+    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
     final subscription = FlutterBluePlus.scanResults.listen((results) {
       foundDevices = results;
     });
 
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 15));
     await FlutterBluePlus.stopScan();
     await subscription.cancel();
   }
