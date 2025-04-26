@@ -6,7 +6,7 @@ Glyco iQ is a non-invasive glucose measuring device developed by a group of unde
 This repository houses the companion mobile application where the user views glucose results. The app features:
 
 - Bluetooth connectivity to GLycoiQ device.
-- Measuing glucose and viewing results.
+- Measuring glucose and viewing results.
 - Classification of glucose level according to  [WHO](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/2380).
 - Visualizing and viewing glucose history.
 - Options to share or download history as pdf.
