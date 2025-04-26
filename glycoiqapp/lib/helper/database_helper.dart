@@ -22,6 +22,7 @@ class DatabaseHelper {
     // print("path: $path");
     final dbPath = join(path, 'glycoiQ.db');
     // await deleteDatabase(dbPath); // Delete this line after first run
+
     return await openDatabase(
       dbPath,
       version: 3, // Updated version number
@@ -45,9 +46,17 @@ class DatabaseHelper {
         ''');
 
         await db.insert('glucose_history',
-            {'date': '2025-03-08', 'time': '08:00 AM', 'glucose': '110 mg/dL'});
+            {'date': '2025-03-07', 'time': '08:00 AM', 'glucose': '5.1'});
         await db.insert('glucose_history',
-            {'date': '2025-03-07', 'time': '06:30 AM', 'glucose': '95 mg/dL'});
+            {'date': '2025-03-08', 'time': '06:30 AM', 'glucose': '6.2'});
+        await db.insert('glucose_history',
+            {'date': '2025-03-09', 'time': '08:00 AM', 'glucose': '5.8'});
+        await db.insert('glucose_history',
+            {'date': '2025-03-10', 'time': '06:30 AM', 'glucose': '6.2'});
+        await db.insert('glucose_history',
+            {'date': '2025-03-11', 'time': '08:00 AM', 'glucose': '4.9'});
+        await db.insert('glucose_history',
+            {'date': '2025-03-12', 'time': '06:30 AM', 'glucose': '4.5'});
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {

@@ -3,6 +3,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'database_helper.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 // Future<void> readFromBluetooth({
 //   required BuildContext context,
@@ -121,13 +122,13 @@ void connectToDevice(BuildContext context) async {
                                                   .contains("glyco")
                                               ? "Glyco Connected"
                                               : "Connected to $deviceName"),
-                                          duration: Duration(seconds: 2),
+                                          duration: const Duration(seconds: 2),
                                         ),
                                       );
 
                                       // Delay before popping to allow SnackBar to show
                                       await Future.delayed(
-                                          Duration(seconds: 2));
+                                          const Duration(seconds: 2));
                                       Navigator.pop(
                                           context); // close dialog AFTER snack shows
                                     }
@@ -169,12 +170,12 @@ Future<void> readFromBluetooth({
   required BuildContext context,
   required Function(List<String>) onDataReceived,
 }) async {
-  final serviceUuid = "00000000-8cb1-44ce-9a66-001dca0941a6";
-  final writeCharUuid = "00000001-8cb1-44ce-9a66-001dca0941a6";
-  final notifyCharUuid = "00000002-8cb1-44ce-9a66-001dca0941a6";
+  const serviceUuid = "00000000-8cb1-44ce-9a66-001dca0941a6";
+  const writeCharUuid = "00000001-8cb1-44ce-9a66-001dca0941a6";
+  const notifyCharUuid = "00000002-8cb1-44ce-9a66-001dca0941a6";
 
   try {
-    final connectedDevices = await FlutterBluePlus.connectedDevices;
+    final connectedDevices = FlutterBluePlus.connectedDevices;
     if (connectedDevices.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("No connected device found.")),
@@ -236,11 +237,10 @@ Future<void> readFromBluetooth({
             Map<String, dynamic> data = json.decode(jsonData);
             if (data['status'] == 'success') {
               String glucose = data['glucose_level'].toString();
-              String time = data['time'] ??
-                  "${DateTime.now().hour}:${DateTime.now().minute}";
-              String date = data['date'] ??
-                  "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}";
-
+              DateTime now = DateTime.now();
+              String time = data['time'] ?? DateFormat('HH:mm').format(now);
+              String date =
+                  data['date'] ?? DateFormat('yyyy-MM-dd').format(now);
               await DatabaseHelper().insertGlucose(date, time, glucose);
               onDataReceived([glucose, time, date]);
 
@@ -262,10 +262,6 @@ Future<void> readFromBluetooth({
       });
     }
 
-    // Send command to start measurement
-    // print("write properties: "
-    // "write=${writeChar.properties.write}, "
-    // "writeWithoutResponse=${writeChar.properties.writeWithoutResponse}");
     if (writeChar.properties.write) {
       await writeChar.write("run_device".codeUnits);
     } else {

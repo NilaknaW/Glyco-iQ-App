@@ -88,7 +88,7 @@ class _MonitorPageState extends State<MonitorPage> {
         children: [
           const ListTile(
               title: Center(
-                  child: Text('Glucose Level mg/dl',
+                  child: Text('Glucose Level mmol/L',
                       style: TextStyle(fontSize: 20)))),
           Text(
             glucose[0],
