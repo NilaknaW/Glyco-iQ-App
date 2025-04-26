@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'navigator/navigator.dart';
+import 'package:splash_master/splash_master.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // print('Initializing SplashMaster...');
+  // SplashMaster.initialize();
+  // print('Resuming SplashMaster...');
+  // SplashMaster.resume();
   runApp(const MainApp());
 }
 

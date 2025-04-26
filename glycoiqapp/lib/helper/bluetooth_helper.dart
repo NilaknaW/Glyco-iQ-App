@@ -5,54 +5,6 @@ import 'database_helper.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
-// Future<void> readFromBluetooth({
-//   required BuildContext context,
-//   required Function(List<String>) onDataReceived,
-// }) async {
-//   try {
-//     final connectedDevices = await FlutterBluePlus.connectedDevices;
-//     if (connectedDevices.isEmpty) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text("No connected device found.")),
-//       );
-//       return;
-//     }
-
-//     final device = connectedDevices.first;
-//     List<BluetoothService> services = await device.discoverServices();
-
-//     for (BluetoothService service in services) {
-//       for (BluetoothCharacteristic characteristic in service.characteristics) {
-//         if (characteristic.properties.read) {
-//           List<int> value = await characteristic.read();
-//           String glucoseData = String.fromCharCodes(value).trim();
-
-//           final now = DateTime.now();
-//           final time = "${now.hour}:${now.minute}";
-//           final date = "${now.year}-${now.month}-${now.day}";
-
-//           await DatabaseHelper().insertGlucose(date, time, glucoseData);
-//           onDataReceived([glucoseData, time, date]);
-
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             SnackBar(content: Text("Glucose level: $glucoseData")),
-//           );
-//           return;
-//         }
-//       }
-//     }
-
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text("No readable characteristic found.")),
-//     );
-//   } catch (e) {
-//     debugPrint("Bluetooth read error: $e");
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(content: Text("Bluetooth read error: $e")),
-//     );
-//   }
-// }
-
 void connectToDevice(BuildContext context) async {
   List<ScanResult> foundDevices = [];
 

@@ -23,6 +23,7 @@ dependencies:
   open_file: ^3.5.10
   share_plus: ^7.2.1
   flutter_animate: ^4.5.2
+  splash_master: ^0.0.2
 
   path: any
 dev_dependencies:
@@ -38,17 +39,18 @@ flutter_icons:
   ios: true
 
 flutter_native_splash:
+  background_image: "assets/icons/icon.png" # Your splash image
   image: "assets/icons/icon.png" # Your splash image
   branding: "assets/icons/branding.png"
   android: true
   ios: true
   fullscreen: true # Optional
+  # color: "#d4e4d4" # Background color of the splash screen
   android_12:
+    background_image: "assets/icons/icon.png" # Your splash image
+    branding: "assets/icons/branding.png"
     image: assets/icons/icon.png
     color: "#FFFFFF"
-  
-
-
 
 flutter:
   uses-material-design: true
