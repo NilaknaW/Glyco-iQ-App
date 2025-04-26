@@ -16,3 +16,12 @@ This repository houses the companion mobile application where the user views glu
 Home | History | Emergency
 ---|---|---
 <img src="docs/home.jpeg" alt="" height="400">|<img src="docs/history.jpeg" alt="" height="400">|<img src="docs/emergency.jpeg" alt="" height="400">
+
+I worked on developing the Mobile application for the main project GlycoiQ by **Team Synop**.
+
+Team Members of the main project: 
+- [Yehen Asuramuni](https://github.com/yhnx)
+- [Oshadha Nimantha](https://github.com/Oshadha-Nimantha)
+- [Sineth Jayawardana](https://github.com/SinethS)
+- [Agrajith Weragoda]()
+
